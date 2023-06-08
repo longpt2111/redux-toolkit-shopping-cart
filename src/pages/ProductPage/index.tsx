@@ -4,19 +4,30 @@ import {
   faMinus,
   faShoppingCart,
 } from "@fortawesome/free-solid-svg-icons";
-import React from "react";
+import React, { useEffect } from "react";
+import { getProductsFetch, selectProducts } from "../../slices/productsSlice";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import ProductItem from "../../components/ProductItem";
 
 const ProductPage: React.FC = () => {
+  const products = useAppSelector(selectProducts);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getProductsFetch());
+  }, [dispatch]);
+
   return (
     <div className="h-[800px] pt-5 pb-5">
       <div className="container mx-auto h-full">
         <div className="grid grid-cols-12 h-full gap-5">
+          {/* Product Item Details */}
           <div className="col-span-7 h-full">
             <div className="flex flex-col gap-y-3 h-full p-8 shadow-lg bg-white rounded-lg">
               <div className="h-3/4">
                 <div className="relative h-full">
                   <img
-                    src=""
+                    src="https://bizweb.dktcdn.net/100/318/244/products/71hiszrhoss-sl1500.jpg?v=1625071465193"
                     alt=""
                     className="absolute w-full h-full top-0 left-0"
                   />
@@ -62,29 +73,20 @@ const ProductPage: React.FC = () => {
               </div>
             </div>
           </div>
+          {/* Product items list */}
           <div className="col-span-5 h-full overflow-auto rounded-lg">
             <div className="grid grids-col-12 gap-3 h-auto">
-              <div className="flex h-44 gap-3 px-4 py-4 rounded-lg bg-white shadow-lg">
-                <div className="w-2/6 h-100 mr-3 rounded-lg overflow-hidden">
-                  <img src="" alt="" />
-                </div>
-                <div className="w-4/6 flex flex-col justify-between">
-                  <div>
-                    <h4 className="text-xl cursor-pointer hover:text-blue-500 font-semibold">
-                      Product Name
-                    </h4>
-                    <p className="text-md font-light text-gray-700">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    </p>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <h3 className="text-2xl font-semibold">12.45</h3>
-                    <button className="outline-none border-0 bg-transparent text-blue-500">
-                      Details
-                    </button>
-                  </div>
-                </div>
-              </div>
+              {products.map(
+                ({ productId, price, productName, description, imageUrl }) => (
+                  <ProductItem
+                    key={productId}
+                    price={price}
+                    productName={productName}
+                    description={description}
+                    imageUrl={imageUrl}
+                  />
+                )
+              )}
             </div>
           </div>
         </div>
