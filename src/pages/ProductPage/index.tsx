@@ -8,12 +8,7 @@ import {
   selectSelectedProduct,
   setSelectedProduct,
 } from "../../slices/selectedProductSlice";
-import {
-  decreaseQuantity,
-  increaseQuantity,
-  resetQuantity,
-  selectQuantity,
-} from "../../slices/quantitySlice";
+import { resetQuantity, selectQuantity } from "../../slices/quantitySlice";
 import ProductQuantity from "../../components/ProductQuantity";
 
 const ProductPage: React.FC = () => {
@@ -25,14 +20,6 @@ const ProductPage: React.FC = () => {
   const handleDetailsClick = (productDetails: Product) => {
     dispatch(setSelectedProduct(productDetails));
     dispatch(resetQuantity());
-  };
-
-  const handleDecreaseQuantity = () => {
-    dispatch(decreaseQuantity());
-  };
-
-  const handleIncreaseQuantity = () => {
-    dispatch(increaseQuantity());
   };
 
   return (
@@ -74,10 +61,7 @@ const ProductPage: React.FC = () => {
                 <div className="col-span-12">
                   <div className="flex items-center justify-between mt-5">
                     <div className="w-1/6">
-                      <ProductQuantity
-                        handleDecreaseQuantity={handleDecreaseQuantity}
-                        handleIncreaseQuantity={handleIncreaseQuantity}
-                      />
+                      <ProductQuantity />
                     </div>
                     <div className="text-right flex items-center gap-8">
                       <p className="mb-0 font-bold text-3xl">
