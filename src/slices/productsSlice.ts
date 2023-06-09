@@ -1,6 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { ProductsState } from "../interfaces/products.interface";
 import { RootState } from "../app/store";
+
+export interface Product {
+  productId?: string;
+  productName: string;
+  description: string;
+  imageUrl: string;
+  price: number;
+}
+
+export interface ProductsState {
+  loading: boolean;
+  products: Product[];
+  error: string | null;
+}
 
 const initialState: ProductsState = {
   loading: false,
