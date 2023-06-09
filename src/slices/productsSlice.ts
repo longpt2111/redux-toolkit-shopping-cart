@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../app/store";
+import { toast } from "react-hot-toast";
 
 export interface Product {
   quantity?: number;
@@ -36,6 +37,11 @@ export const productsSlice = createSlice({
     getProductsFailure: (state, action) => {
       state.error = action.payload;
       state.loading = false;
+      toast.error("Get products failed!!!", {
+        duration: 3000,
+        position: "bottom-left",
+        className: "border-solid border-2 border-rose-500",
+      });
     },
   },
 });

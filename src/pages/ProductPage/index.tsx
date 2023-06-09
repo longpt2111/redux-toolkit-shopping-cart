@@ -105,9 +105,9 @@ const ProductPage: React.FC = () => {
                     <div className="text-right flex items-center gap-8">
                       <p className="mb-0 font-bold text-3xl">
                         $
-                        {(
-                          (selectedProduct?.price as number) * quantity
-                        ).toFixed(2)}
+                        {selectedProduct?.price
+                          ? (selectedProduct?.price * quantity).toFixed(2)
+                          : "0.00"}
                       </p>
                       <div
                         className="flex items-center justify-center duration-100 shadow-md gap-4 px-6 py-3 text-lg rounded-lg bg-blue-500 text-white cursor-pointer hover:bg-blue-400"
