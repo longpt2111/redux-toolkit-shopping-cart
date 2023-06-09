@@ -1,9 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPlus,
-  faMinus,
-  faShoppingCart,
-} from "@fortawesome/free-solid-svg-icons";
+import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import { Product, selectProducts } from "../../slices/productsSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
@@ -18,6 +14,7 @@ import {
   resetQuantity,
   selectQuantity,
 } from "../../slices/quantitySlice";
+import ProductQuantity from "../../components/ProductQuantity";
 
 const ProductPage: React.FC = () => {
   const products = useAppSelector(selectProducts);
@@ -77,31 +74,10 @@ const ProductPage: React.FC = () => {
                 <div className="col-span-12">
                   <div className="flex items-center justify-between mt-5">
                     <div className="w-1/6">
-                      <div className="flex items-center justify-between bg-gray-200 rounded-lg px-5 py-1">
-                        <button
-                          className={`outline-none border-0 bg-transparent ${
-                            quantity === 1
-                              ? "text-gray-300 cursor-default"
-                              : "text-orange-500"
-                          }`}
-                          onClick={handleDecreaseQuantity}
-                        >
-                          <FontAwesomeIcon icon={faMinus} />
-                        </button>
-                        <div className="text-black font-semibold text-lg">
-                          {quantity}
-                        </div>
-                        <button
-                          className={`outline-none border-0 bg-transparent ${
-                            quantity === 99
-                              ? "text-gray-300 cursor-default"
-                              : "text-orange-500"
-                          }`}
-                          onClick={handleIncreaseQuantity}
-                        >
-                          <FontAwesomeIcon icon={faPlus} />
-                        </button>
-                      </div>
+                      <ProductQuantity
+                        handleDecreaseQuantity={handleDecreaseQuantity}
+                        handleIncreaseQuantity={handleIncreaseQuantity}
+                      />
                     </div>
                     <div className="text-right flex items-center gap-8">
                       <p className="mb-0 font-bold text-3xl">
