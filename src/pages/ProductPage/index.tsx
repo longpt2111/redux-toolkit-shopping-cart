@@ -80,7 +80,9 @@ const ProductPage: React.FC = () => {
                       <div className="flex items-center justify-between bg-gray-200 rounded-lg px-5 py-1">
                         <button
                           className={`outline-none border-0 bg-transparent ${
-                            quantity === 1 ? "text-gray-300" : "text-orange-500"
+                            quantity === 1
+                              ? "text-gray-300 cursor-default"
+                              : "text-orange-500"
                           }`}
                           onClick={handleDecreaseQuantity}
                         >
@@ -92,7 +94,7 @@ const ProductPage: React.FC = () => {
                         <button
                           className={`outline-none border-0 bg-transparent ${
                             quantity === 99
-                              ? "text-gray-300"
+                              ? "text-gray-300 cursor-default"
                               : "text-orange-500"
                           }`}
                           onClick={handleIncreaseQuantity}
