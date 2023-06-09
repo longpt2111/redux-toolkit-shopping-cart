@@ -66,7 +66,7 @@ const ProductPage: React.FC = () => {
   };
 
   return (
-    <div className="h-[800px] pt-5 pb-5">
+    <div className="h-[800px] pt-5 pb-5 mt-12">
       <div className="container mx-auto h-full">
         <div className="grid grid-cols-12 h-full gap-5">
           <div className="col-span-7 h-full">

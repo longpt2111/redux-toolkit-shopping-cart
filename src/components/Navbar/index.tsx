@@ -2,10 +2,20 @@ import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import { useAppSelector } from "../../app/hooks";
+import { selectCartProducts } from "../../slices/cartProductsSlice";
 
 const Navbar: React.FC = () => {
+  const cartProducts = useAppSelector(selectCartProducts);
+  const totalQuantity =
+    cartProducts.length > 0
+      ? cartProducts
+          .map(({ quantity }) => quantity)
+          .reduce((total, value) => (total as number) + (value as number))
+      : 0;
+
   return (
-    <div className="bg-white shadow-md">
+    <div className="bg-white shadow-md fixed top-0 left-0 right-0 z-50">
       <div className="container mx-auto">
         <div className="flex items-center justify-between py-2">
           <div className="flex items-center gap-8 w-1/3">
@@ -49,7 +59,11 @@ const Navbar: React.FC = () => {
             <div className="flex items-center justify-end">
               <Link
                 to="/checkout"
-                className="rounded-full relative flex items-center justify-center text-2xl w-10 text-blue-500 cursor-pointer mr-2 after:content-['2'] after:flex after:justify-center after:items-center after:rounded-full after:absolute after:w-6 after:h-6 after:bg-[#EF4444] after:text-white after:text-sm after:ml-5 after:mb-5"
+                className={`rounded-full relative flex items-center justify-center text-2xl w-10 text-blue-500 cursor-pointer mr-2 after:flex after:justify-center after:items-center after:rounded-full after:absolute after:w-6 after:h-6 after:bg-[#EF4444] after:text-white after:text-sm after:ml-5 after:mb-5 ${
+                  totalQuantity && totalQuantity > 0
+                    ? `after:content-['${totalQuantity}']`
+                    : "after:hidden"
+                }`}
               >
                 <FontAwesomeIcon icon={faCartShopping} />
               </Link>

@@ -2,12 +2,24 @@ import React from "react";
 import ProductItemInCart from "../../components/ProductItemInCart";
 import { useAppSelector } from "../../app/hooks";
 import { selectCartProducts } from "../../slices/cartProductsSlice";
+import { useNavigate } from "react-router-dom";
 
 const CheckoutPage: React.FC = () => {
+  const navigate = useNavigate();
   const cartProducts = useAppSelector(selectCartProducts);
+  const subTotal =
+    cartProducts.length > 0
+      ? cartProducts
+          .map(
+            ({ price, quantity }) => (price as number) * (quantity as number)
+          )
+          .reduce((total, value) => (total as number) + (value as number))
+      : 0;
+  const shippingCost = 10;
+  const total = subTotal + shippingCost;
 
   return (
-    <div className="rounded-lg mx-auto overflow-hidden bg-transparent container xl:px-48">
+    <div className="rounded-lg mx-auto overflow-hidden bg-transparent container xl:px-48 mt-12">
       <div className="grid lg:grid-cols-12 pt-5 gap-4 h-full auto-rows-min">
         <div className="lg:col-span-12">
           <div className="p-3 bg-white shadow-lg w-full rounded-lg">
@@ -43,31 +55,37 @@ const CheckoutPage: React.FC = () => {
                 <div className="col-span-12 text-lg">
                   <div className="flex items-center justify-between">
                     <p className="font-light text-gray-700">Subtotal:</p>
-                    <p className="font-normal">$0</p>
+                    <p className="font-normal">${subTotal.toFixed(2)}</p>
                   </div>
                   <div className="flex items-center justify-between">
                     <p className="font-light text-gray-700">Shipping Cost:</p>
-                    <p className="font-normal">$0</p>
+                    <p className="font-normal">${shippingCost.toFixed(2)}</p>
                   </div>
                 </div>
                 <div className="col-span-12">
                   <div className="flex items-center justify-between font-semibold text-3xl">
-                    <p className="">Total:</p>
-                    <p className="">$0.00</p>
+                    <p>Total:</p>
+                    <p>${total > 0 ? total.toFixed(2) : "0.00"}</p>
                   </div>
                 </div>
               </div>
             </div>
             <div className="col-span-12">
               <button
-                className="flex items-center justify-center duration-100 shadow-md gap-2 px-4 py-2 text-md rounded-md bg-blue-500 text-white hover:bg-blue-400 opacity-50 cursor-not-allowed w-full"
-                disabled
+                className={`flex items-center justify-center duration-100 shadow-md gap-2 px-4 py-2 text-md rounded-md bg-blue-500 text-white hover:bg-blue-400 w-full ${
+                  cartProducts.length === 0
+                    ? "opacity-50 cursor-not-allowed"
+                    : ""
+                }`}
               >
                 Checkout
               </button>
             </div>
             <div className="col-span-12">
-              <button className="flex items-center justify-center duration-100 shadow-md gap-2 px-4 py-2 text-md rounded-md border border-blue-500 text-blue-500 hover:bg-blue-200 false w-full">
+              <button
+                className="flex items-center justify-center duration-100 shadow-md gap-2 px-4 py-2 text-md rounded-md border border-blue-500 text-blue-500 hover:bg-blue-200 false w-full"
+                onClick={() => navigate("/products")}
+              >
                 Continue shopping
               </button>
             </div>
