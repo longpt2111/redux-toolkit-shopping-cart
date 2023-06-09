@@ -14,17 +14,18 @@ import {
   setSelectedProduct,
 } from "../../slices/selectedProductSlice";
 import {
-  addProductsToCart,
+  addProductToCart,
   increaseCartProduct,
   selectCartProducts,
 } from "../../slices/cartProductsSlice";
+import { toast } from "react-hot-toast";
 
 const ProductPage: React.FC = () => {
+  const dispatch = useAppDispatch();
   const products = useAppSelector(selectProducts);
   const selectedProduct = useAppSelector(selectSelectedProduct);
   const quantity = useAppSelector(selectQuantity);
   const cartProducts = useAppSelector(selectCartProducts);
-  const dispatch = useAppDispatch();
 
   const handleDetailsClick = (productDetails: Product) => {
     dispatch(setSelectedProduct(productDetails));
@@ -45,10 +46,23 @@ const ProductPage: React.FC = () => {
         ({ productId }) => selectedProduct.productId === productId
       )
     ) {
-      dispatch(increaseCartProduct(selectedProduct.productId));
+      dispatch(
+        increaseCartProduct({
+          id: selectedProduct.productId,
+          quantity: selectedProduct.quantity,
+        })
+      );
     } else {
-      dispatch(addProductsToCart(selectedProduct));
+      dispatch(addProductToCart(selectedProduct));
     }
+    dispatch(resetProductsQuantity());
+    toast("Added Successfully!!", {
+      duration: 3000,
+      position: "bottom-left",
+      icon: "👏",
+      className:
+        "flex items-center px-4 py-2 bg-[#10B981] text-white rounded-lg shadow-md",
+    });
   };
 
   return (
@@ -60,11 +74,7 @@ const ProductPage: React.FC = () => {
               <div className="h-3/4">
                 <div className="relative h-full">
                   <img
-                    src={
-                      selectedProduct?.imageUrl
-                        ? selectedProduct?.imageUrl
-                        : products[0]?.imageUrl
-                    }
+                    src={selectedProduct?.imageUrl}
                     alt=""
                     className="absolute w-full h-full top-0 left-0"
                   />
@@ -75,14 +85,10 @@ const ProductPage: React.FC = () => {
                   <div className="grid grid-cols-12 w-full">
                     <div className="col-span-10">
                       <h2 className="text-4xl font-normal mb-2">
-                        {selectedProduct?.productName
-                          ? selectedProduct?.productName
-                          : products[0]?.productName}
+                        {selectedProduct?.productName}
                       </h2>
                       <p className="text-md font-light text-gray-700">
-                        {selectedProduct?.description
-                          ? selectedProduct?.description
-                          : products[0]?.description}
+                        {selectedProduct?.description}
                       </p>
                     </div>
                   </div>
@@ -99,11 +105,9 @@ const ProductPage: React.FC = () => {
                     <div className="text-right flex items-center gap-8">
                       <p className="mb-0 font-bold text-3xl">
                         $
-                        {selectedProduct?.price
-                          ? (selectedProduct?.price * quantity).toFixed(2)
-                          : ((products[0]?.price as number) * quantity).toFixed(
-                              2
-                            )}
+                        {(
+                          (selectedProduct?.price as number) * quantity
+                        ).toFixed(2)}
                       </p>
                       <div
                         className="flex items-center justify-center duration-100 shadow-md gap-4 px-6 py-3 text-lg rounded-lg bg-blue-500 text-white cursor-pointer"

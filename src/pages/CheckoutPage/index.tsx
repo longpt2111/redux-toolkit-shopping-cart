@@ -21,12 +21,8 @@ const CheckoutPage: React.FC = () => {
             <div className="col-span-12">
               <div className="grid gap-4 w-full h-full rounded-lg overflow-auto">
                 {cartProducts.length > 0 ? (
-                  cartProducts.map(({ quantity, productId }, index) => (
-                    <ProductItemInCart
-                      key={index}
-                      quantity={quantity}
-                      productId={productId}
-                    />
+                  cartProducts.map(({ ...props }, index) => (
+                    <ProductItemInCart key={index} {...props} />
                   ))
                 ) : (
                   <h4 className="text-center mt-12 font-bold text-xl">

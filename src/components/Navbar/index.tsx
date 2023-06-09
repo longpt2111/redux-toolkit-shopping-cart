@@ -49,7 +49,7 @@ const Navbar: React.FC = () => {
             <div className="flex items-center justify-end">
               <Link
                 to="/checkout"
-                className="rounded-full relative flex items-center justify-center text-2xl w-10 text-blue-500 cursor-pointer"
+                className="rounded-full relative flex items-center justify-center text-2xl w-10 text-blue-500 cursor-pointer mr-2 after:content-['2'] after:flex after:justify-center after:items-center after:rounded-full after:absolute after:w-6 after:h-6 after:bg-[#EF4444] after:text-white after:text-sm after:ml-5 after:mb-5"
               >
                 <FontAwesomeIcon icon={faCartShopping} />
               </Link>

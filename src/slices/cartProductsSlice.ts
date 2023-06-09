@@ -14,17 +14,23 @@ export const cartProductsSlice = createSlice({
   name: "cartProducts",
   initialState,
   reducers: {
-    addProductsToCart: (state, action) => {
+    addProductToCart: (state, action) => {
       state.cartProducts.push(action.payload);
     },
-    removeProductsFromCart: (state, action) => {
-      state.cartProducts = action.payload;
+    removeProductFromCart: (state, action) => {
+      state.cartProducts = state.cartProducts.filter(
+        ({ productId }) => productId !== action.payload.id
+      );
     },
     increaseCartProduct: (state, action) => {
       state.cartProducts = state.cartProducts.map(
         ({ quantity, productId, ...rest }) => {
-          if (action.payload === productId)
-            return { quantity: ++(quantity as number), productId, ...rest };
+          if (action.payload.id === productId)
+            return {
+              quantity: (quantity as number) + action.payload.quantity,
+              productId,
+              ...rest,
+            };
           return { quantity, productId, ...rest };
         }
       );
@@ -32,8 +38,12 @@ export const cartProductsSlice = createSlice({
     decreaseCartProduct: (state, action) => {
       state.cartProducts = state.cartProducts.map(
         ({ quantity, productId, ...rest }) => {
-          if (action.payload === productId)
-            return { quantity: --(quantity as number), productId, ...rest };
+          if (action.payload.id === productId)
+            return {
+              quantity: (quantity as number) - action.payload.quantity,
+              productId,
+              ...rest,
+            };
           return { quantity, productId, ...rest };
         }
       );
@@ -42,8 +52,8 @@ export const cartProductsSlice = createSlice({
 });
 
 export const {
-  addProductsToCart,
-  removeProductsFromCart,
+  addProductToCart,
+  removeProductFromCart,
   increaseCartProduct,
   decreaseCartProduct,
 } = cartProductsSlice.actions;
