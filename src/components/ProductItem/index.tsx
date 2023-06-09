@@ -36,7 +36,7 @@ const ProductItem: React.FC<IPropsProductItem> = ({
         <div className="flex justify-between items-center">
           <h3 className="text-2xl font-semibold">${price}</h3>
           <button
-            className="outline-none border-0 bg-transparent text-blue-500"
+            className="outline-none border-0 bg-transparent text-blue-500 hover:text-blue-400"
             onClick={onDetailsClick}
           >
             Details

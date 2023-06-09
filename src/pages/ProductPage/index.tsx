@@ -110,7 +110,7 @@ const ProductPage: React.FC = () => {
                         ).toFixed(2)}
                       </p>
                       <div
-                        className="flex items-center justify-center duration-100 shadow-md gap-4 px-6 py-3 text-lg rounded-lg bg-blue-500 text-white cursor-pointer"
+                        className="flex items-center justify-center duration-100 shadow-md gap-4 px-6 py-3 text-lg rounded-lg bg-blue-500 text-white cursor-pointer hover:bg-blue-400"
                         onClick={() =>
                           handleAddProductsToCart({
                             quantity,
