@@ -1,15 +1,15 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import { Product, selectProducts } from "../../slices/productsSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import ProductItem from "../../components/ProductItem";
+import ProductQuantity from "../../components/ProductQuantity";
+import { Product, selectProducts } from "../../slices/productsSlice";
+import { resetQuantity, selectQuantity } from "../../slices/quantitySlice";
 import {
   selectSelectedProduct,
   setSelectedProduct,
 } from "../../slices/selectedProductSlice";
-import { resetQuantity, selectQuantity } from "../../slices/quantitySlice";
-import ProductQuantity from "../../components/ProductQuantity";
 
 const ProductPage: React.FC = () => {
   const products = useAppSelector(selectProducts);

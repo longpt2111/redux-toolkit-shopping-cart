@@ -8,7 +8,11 @@ import {
   selectQuantity,
 } from "../../slices/quantitySlice";
 
-const ProductQuantity: React.FC = () => {
+interface IPropsProductQuantity {
+  className?: string;
+}
+
+const ProductQuantity: React.FC<IPropsProductQuantity> = ({ className }) => {
   const quantity = useAppSelector(selectQuantity);
   const dispatch = useAppDispatch();
 
@@ -21,7 +25,9 @@ const ProductQuantity: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-between bg-gray-200 rounded-lg px-5 py-1">
+    <div
+      className={`flex items-center justify-between bg-gray-200 rounded-lg px-5 py-1 ${className}`}
+    >
       <button
         className={`outline-none border-0 bg-transparent ${
           quantity === 1 ? "text-gray-300 cursor-default" : "text-orange-500"

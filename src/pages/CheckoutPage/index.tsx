@@ -1,4 +1,5 @@
 import React from "react";
+import ProductItemInCart from "../../components/ProductItemInCart";
 
 const CheckoutPage: React.FC = () => {
   return (
@@ -14,10 +15,11 @@ const CheckoutPage: React.FC = () => {
         <div className="lg:col-span-8 overflow-auto">
           <div className="grid grid-cols-12">
             <div className="col-span-12">
-              <div className="grid girds-col-12 gap-4 w-full h-full rounded-lg overflow-auto">
-                <h4 className="text-center mt-12 font-bold text-xl">
+              <div className="grid gap-4 w-full h-full rounded-lg overflow-auto">
+                {/* <h4 className="text-center mt-12 font-bold text-xl">
                   You have no products in cart
-                </h4>
+                </h4> */}
+                <ProductItemInCart />
               </div>
             </div>
           </div>
