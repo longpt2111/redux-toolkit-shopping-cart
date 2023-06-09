@@ -5,21 +5,50 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import ProductItem from "../../components/ProductItem";
 import ProductQuantity from "../../components/ProductQuantity";
 import { Product, selectProducts } from "../../slices/productsSlice";
-import { resetQuantity, selectQuantity } from "../../slices/quantitySlice";
 import {
+  decreaseProductsQuantity,
+  increaseProductsQuantity,
+  resetProductsQuantity,
+  selectQuantity,
   selectSelectedProduct,
   setSelectedProduct,
 } from "../../slices/selectedProductSlice";
+import {
+  addProductsToCart,
+  increaseCartProduct,
+  selectCartProducts,
+} from "../../slices/cartProductsSlice";
 
 const ProductPage: React.FC = () => {
   const products = useAppSelector(selectProducts);
   const selectedProduct = useAppSelector(selectSelectedProduct);
   const quantity = useAppSelector(selectQuantity);
+  const cartProducts = useAppSelector(selectCartProducts);
   const dispatch = useAppDispatch();
 
   const handleDetailsClick = (productDetails: Product) => {
     dispatch(setSelectedProduct(productDetails));
-    dispatch(resetQuantity());
+    dispatch(resetProductsQuantity());
+  };
+
+  const handleDecreaseQuantity = () => {
+    dispatch(decreaseProductsQuantity());
+  };
+
+  const handleIncreaseQuantity = () => {
+    dispatch(increaseProductsQuantity());
+  };
+
+  const handleAddProductsToCart = (selectedProduct: Product) => {
+    if (
+      cartProducts.find(
+        ({ productId }) => selectedProduct.productId === productId
+      )
+    ) {
+      dispatch(increaseCartProduct(selectedProduct.productId));
+    } else {
+      dispatch(addProductsToCart(selectedProduct));
+    }
   };
 
   return (
@@ -61,16 +90,30 @@ const ProductPage: React.FC = () => {
                 <div className="col-span-12">
                   <div className="flex items-center justify-between mt-5">
                     <div className="w-1/6">
-                      <ProductQuantity />
+                      <ProductQuantity
+                        quantity={quantity}
+                        handleDecreaseQuantity={handleDecreaseQuantity}
+                        handleIncreaseQuantity={handleIncreaseQuantity}
+                      />
                     </div>
                     <div className="text-right flex items-center gap-8">
                       <p className="mb-0 font-bold text-3xl">
                         $
                         {selectedProduct?.price
                           ? (selectedProduct?.price * quantity).toFixed(2)
-                          : (products[0]?.price * quantity).toFixed(2)}
+                          : ((products[0]?.price as number) * quantity).toFixed(
+                              2
+                            )}
                       </p>
-                      <div className="flex items-center justify-center duration-100 shadow-md gap-4 px-6 py-3 text-lg rounded-lg bg-blue-500 text-white cursor-pointer">
+                      <div
+                        className="flex items-center justify-center duration-100 shadow-md gap-4 px-6 py-3 text-lg rounded-lg bg-blue-500 text-white cursor-pointer"
+                        onClick={() =>
+                          handleAddProductsToCart({
+                            quantity,
+                            ...selectedProduct,
+                          })
+                        }
+                      >
                         <FontAwesomeIcon icon={faShoppingCart} /> Add to cart
                       </div>
                     </div>

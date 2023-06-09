@@ -2,8 +2,31 @@ import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import ProductQuantity from "../ProductQuantity";
+import { useDispatch } from "react-redux";
+import {
+  decreaseCartProduct,
+  increaseCartProduct,
+} from "../../slices/cartProductsSlice";
 
-const ProductItemInCart: React.FC = () => {
+interface IPropsProductItemInCart {
+  quantity?: number;
+  productId?: string;
+}
+
+const ProductItemInCart: React.FC<IPropsProductItemInCart> = ({
+  quantity,
+  productId,
+}) => {
+  const dispatch = useDispatch();
+
+  const handleDecreaseQuantity = (productId?: string) => {
+    dispatch(decreaseCartProduct(productId));
+  };
+
+  const handleIncreaseQuantity = (productId?: string) => {
+    dispatch(increaseCartProduct(productId));
+  };
+
   return (
     <div className="w-full h-[176px] flex items-center shadow-lg gap-3 px-5 py-3 bg-white rounded-lg">
       <div
@@ -27,7 +50,12 @@ const ProductItemInCart: React.FC = () => {
           <p className="text-sm text-gray-700 font-light">description</p>
         </div>
         <div className="flex items-center justify-between w-full pr-6">
-          <ProductQuantity className="w-1/3" />
+          <ProductQuantity
+            className="w-1/3"
+            quantity={quantity}
+            handleDecreaseQuantity={() => handleDecreaseQuantity(productId)}
+            handleIncreaseQuantity={() => handleIncreaseQuantity(productId)}
+          />
         </div>
       </div>
     </div>

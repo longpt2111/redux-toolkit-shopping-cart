@@ -1,7 +1,11 @@
 import React from "react";
 import ProductItemInCart from "../../components/ProductItemInCart";
+import { useAppSelector } from "../../app/hooks";
+import { selectCartProducts } from "../../slices/cartProductsSlice";
 
 const CheckoutPage: React.FC = () => {
+  const cartProducts = useAppSelector(selectCartProducts);
+
   return (
     <div className="rounded-lg mx-auto overflow-hidden bg-transparent container xl:px-48">
       <div className="grid lg:grid-cols-12 pt-5 gap-4 h-full auto-rows-min">
@@ -16,10 +20,19 @@ const CheckoutPage: React.FC = () => {
           <div className="grid grid-cols-12">
             <div className="col-span-12">
               <div className="grid gap-4 w-full h-full rounded-lg overflow-auto">
-                {/* <h4 className="text-center mt-12 font-bold text-xl">
-                  You have no products in cart
-                </h4> */}
-                <ProductItemInCart />
+                {cartProducts.length > 0 ? (
+                  cartProducts.map(({ quantity, productId }, index) => (
+                    <ProductItemInCart
+                      key={index}
+                      quantity={quantity}
+                      productId={productId}
+                    />
+                  ))
+                ) : (
+                  <h4 className="text-center mt-12 font-bold text-xl">
+                    You have no products in cart
+                  </h4>
+                )}
               </div>
             </div>
           </div>

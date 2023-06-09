@@ -1,29 +1,20 @@
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import {
-  decreaseQuantity,
-  increaseQuantity,
-  selectQuantity,
-} from "../../slices/quantitySlice";
 
 interface IPropsProductQuantity {
   className?: string;
+  quantity?: number;
+  handleDecreaseQuantity(productId?: string): void;
+  handleIncreaseQuantity(productId?: string): void;
 }
 
-const ProductQuantity: React.FC<IPropsProductQuantity> = ({ className }) => {
-  const quantity = useAppSelector(selectQuantity);
-  const dispatch = useAppDispatch();
-
-  const handleDecreaseQuantity = () => {
-    dispatch(decreaseQuantity());
-  };
-
-  const handleIncreaseQuantity = () => {
-    dispatch(increaseQuantity());
-  };
-
+const ProductQuantity: React.FC<IPropsProductQuantity> = ({
+  className,
+  quantity,
+  handleDecreaseQuantity,
+  handleIncreaseQuantity,
+}) => {
   return (
     <div
       className={`flex items-center justify-between bg-gray-200 rounded-lg px-5 py-1 ${className}`}
@@ -32,7 +23,7 @@ const ProductQuantity: React.FC<IPropsProductQuantity> = ({ className }) => {
         className={`outline-none border-0 bg-transparent ${
           quantity === 1 ? "text-gray-300 cursor-default" : "text-orange-500"
         }`}
-        onClick={handleDecreaseQuantity}
+        onClick={() => handleDecreaseQuantity()}
       >
         <FontAwesomeIcon icon={faMinus} />
       </button>
@@ -41,7 +32,7 @@ const ProductQuantity: React.FC<IPropsProductQuantity> = ({ className }) => {
         className={`outline-none border-0 bg-transparent ${
           quantity === 99 ? "text-gray-300 cursor-default" : "text-orange-500"
         }`}
-        onClick={handleIncreaseQuantity}
+        onClick={() => handleIncreaseQuantity()}
       >
         <FontAwesomeIcon icon={faPlus} />
       </button>
