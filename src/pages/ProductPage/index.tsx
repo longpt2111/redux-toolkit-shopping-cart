@@ -4,30 +4,38 @@ import {
   faMinus,
   faShoppingCart,
 } from "@fortawesome/free-solid-svg-icons";
-import React, { useEffect } from "react";
-import {
-  Product,
-  getProductsFetch,
-  selectProducts,
-} from "../../slices/productsSlice";
+import React from "react";
+import { Product, selectProducts } from "../../slices/productsSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import ProductItem from "../../components/ProductItem";
 import {
   selectSelectedProduct,
   setSelectedProduct,
 } from "../../slices/selectedProductSlice";
+import {
+  decreaseQuantity,
+  increaseQuantity,
+  resetQuantity,
+  selectQuantity,
+} from "../../slices/quantitySlice";
 
 const ProductPage: React.FC = () => {
   const products = useAppSelector(selectProducts);
   const selectedProduct = useAppSelector(selectSelectedProduct);
+  const quantity = useAppSelector(selectQuantity);
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(getProductsFetch());
-  }, [dispatch]);
 
   const handleDetailsClick = (productDetails: Product) => {
     dispatch(setSelectedProduct(productDetails));
+    dispatch(resetQuantity());
+  };
+
+  const handleDecreaseQuantity = () => {
+    dispatch(decreaseQuantity());
+  };
+
+  const handleIncreaseQuantity = () => {
+    dispatch(increaseQuantity());
   };
 
   return (
@@ -70,13 +78,25 @@ const ProductPage: React.FC = () => {
                   <div className="flex items-center justify-between mt-5">
                     <div className="w-1/6">
                       <div className="flex items-center justify-between bg-gray-200 rounded-lg px-5 py-1">
-                        <button className="outline-none border-0 bg-transparent text-gray-300">
+                        <button
+                          className={`outline-none border-0 bg-transparent ${
+                            quantity === 1 ? "text-gray-300" : "text-orange-500"
+                          }`}
+                          onClick={handleDecreaseQuantity}
+                        >
                           <FontAwesomeIcon icon={faMinus} />
                         </button>
                         <div className="text-black font-semibold text-lg">
-                          1
+                          {quantity}
                         </div>
-                        <button className="outline-none border-0 bg-transparent text-gray-300">
+                        <button
+                          className={`outline-none border-0 bg-transparent ${
+                            quantity === 99
+                              ? "text-gray-300"
+                              : "text-orange-500"
+                          }`}
+                          onClick={handleIncreaseQuantity}
+                        >
                           <FontAwesomeIcon icon={faPlus} />
                         </button>
                       </div>
@@ -85,8 +105,8 @@ const ProductPage: React.FC = () => {
                       <p className="mb-0 font-bold text-3xl">
                         $
                         {selectedProduct?.price
-                          ? selectedProduct?.price
-                          : products[0]?.price}
+                          ? (selectedProduct?.price * quantity).toFixed(2)
+                          : (products[0]?.price * quantity).toFixed(2)}
                       </p>
                       <div className="flex items-center justify-center duration-100 shadow-md gap-4 px-6 py-3 text-lg rounded-lg bg-blue-500 text-white cursor-pointer">
                         <FontAwesomeIcon icon={faShoppingCart} /> Add to cart
