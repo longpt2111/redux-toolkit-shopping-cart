@@ -30,7 +30,8 @@ const ProductItemInCart: React.FC<IPropsProductItemInCart> = ({
 
   const handleDecreaseQuantity = () => {
     if (quantity && quantity <= 1) {
-      dispatch(removeProductFromCart({ id: productId }));
+      if (confirm("Do you want to delete this product?"))
+        dispatch(removeProductFromCart({ id: productId }));
     } else {
       dispatch(decreaseCartProduct({ id: productId, quantity: 1 }));
     }
@@ -42,7 +43,8 @@ const ProductItemInCart: React.FC<IPropsProductItemInCart> = ({
   };
 
   const handleRemoveProductFromCart = () => {
-    dispatch(removeProductFromCart({ id: productId }));
+    if (confirm("Do you want to delete this product?"))
+      dispatch(removeProductFromCart({ id: productId }));
   };
 
   return (

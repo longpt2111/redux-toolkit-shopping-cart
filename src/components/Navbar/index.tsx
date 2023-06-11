@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { useAppSelector } from "../../app/hooks";
 import { selectCartProducts } from "../../slices/cartProductsSlice";
+import TotalQuantityIcon from "../TotalQuantityIcon";
 
 const Navbar: React.FC = () => {
   const cartProducts = useAppSelector(selectCartProducts);
@@ -59,13 +60,10 @@ const Navbar: React.FC = () => {
             <div className="flex items-center justify-end">
               <Link
                 to="/checkout"
-                className={`rounded-full relative flex items-center justify-center text-2xl w-10 text-blue-500 cursor-pointer mr-2 after:flex after:justify-center after:items-center after:rounded-full after:absolute after:w-6 after:h-6 after:bg-[#EF4444] after:text-white after:text-sm after:ml-5 after:mb-5 ${
-                  totalQuantity && totalQuantity > 0
-                    ? `after:content-['${totalQuantity}']`
-                    : "after:hidden"
-                }`}
+                className="rounded-full relative flex items-center justify-center text-2xl w-10 text-blue-500 cursor-pointer mr-2"
               >
                 <FontAwesomeIcon icon={faCartShopping} />
+                <TotalQuantityIcon totalQuantity={totalQuantity} />
               </Link>
             </div>
           </div>
