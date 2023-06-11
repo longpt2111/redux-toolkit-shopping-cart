@@ -6,12 +6,14 @@ export interface CartProductsState {
   cartProducts: Product[];
   loading: boolean;
   error: string | null;
+  purchaseSuccess: boolean;
 }
 
 const initialState: CartProductsState = {
   cartProducts: [],
   loading: false,
   error: null,
+  purchaseSuccess: false,
 };
 
 export const cartProductsSlice = createSlice({
@@ -60,10 +62,15 @@ export const cartProductsSlice = createSlice({
       state.cartProducts = [];
       state.loading = false;
       state.error = null;
+      state.purchaseSuccess = true;
     },
     purchaseProductsFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;
+      state.purchaseSuccess = false;
+    },
+    resetPurchaseSuccess: (state) => {
+      state.purchaseSuccess = false;
     },
   },
 });
@@ -76,6 +83,7 @@ export const {
   purchaseProducts,
   purchaseProductsSuccess,
   purchaseProductsFailure,
+  resetPurchaseSuccess,
 } = cartProductsSlice.actions;
 
 export const selectCartProducts = (state: RootState) =>
@@ -84,5 +92,7 @@ export const selectPurchaseLoading = (state: RootState) =>
   state.cartProducts.loading;
 export const selectPurchaseError = (state: RootState) =>
   state.cartProducts.error;
+export const selectPurchaseSuccess = (state: RootState) =>
+  state.cartProducts.purchaseSuccess;
 
 export default cartProductsSlice.reducer;

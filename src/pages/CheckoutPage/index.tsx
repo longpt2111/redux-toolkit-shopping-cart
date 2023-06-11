@@ -1,18 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ProductItemInCart from "../../components/ProductItemInCart";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
   purchaseProducts,
+  resetPurchaseSuccess,
   selectCartProducts,
-  selectPurchaseError,
+  selectPurchaseSuccess,
 } from "../../slices/cartProductsSlice";
 import { useNavigate } from "react-router-dom";
 
 const CheckoutPage: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const purchaseError = useAppSelector(selectPurchaseError);
   const cartProducts = useAppSelector(selectCartProducts);
+  const isPurchaseSuccess = useAppSelector(selectPurchaseSuccess);
   const subTotal =
     cartProducts.length > 0
       ? cartProducts
@@ -27,9 +28,15 @@ const CheckoutPage: React.FC = () => {
   const handlePurchase = () => {
     if (confirm("Do you want to purchase?")) {
       dispatch({ ...purchaseProducts(), payload: cartProducts });
-      if (!purchaseError) navigate("/products");
     }
   };
+
+  useEffect(() => {
+    if (isPurchaseSuccess) {
+      navigate("/products");
+      dispatch(resetPurchaseSuccess());
+    }
+  });
 
   return (
     <div className="rounded-lg mx-auto overflow-hidden bg-transparent container xl:px-48 mt-12">
