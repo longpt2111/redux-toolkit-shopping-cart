@@ -1,11 +1,17 @@
 import React from "react";
 import ProductItemInCart from "../../components/ProductItemInCart";
-import { useAppSelector } from "../../app/hooks";
-import { selectCartProducts } from "../../slices/cartProductsSlice";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import {
+  purchaseProducts,
+  selectCartProducts,
+  selectPurchaseError,
+} from "../../slices/cartProductsSlice";
 import { useNavigate } from "react-router-dom";
 
 const CheckoutPage: React.FC = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const purchaseError = useAppSelector(selectPurchaseError);
   const cartProducts = useAppSelector(selectCartProducts);
   const subTotal =
     cartProducts.length > 0
@@ -17,6 +23,13 @@ const CheckoutPage: React.FC = () => {
       : 0;
   const shippingCost = 10;
   const total = subTotal + shippingCost;
+
+  const handlePurchase = () => {
+    if (confirm("Do you want to purchase?")) {
+      dispatch({ ...purchaseProducts(), payload: cartProducts });
+      if (!purchaseError) navigate("/products");
+    }
+  };
 
   return (
     <div className="rounded-lg mx-auto overflow-hidden bg-transparent container xl:px-48 mt-12">
@@ -77,6 +90,8 @@ const CheckoutPage: React.FC = () => {
                     ? "opacity-50 cursor-not-allowed"
                     : ""
                 }`}
+                disabled={cartProducts.length === 0}
+                onClick={handlePurchase}
               >
                 Checkout
               </button>

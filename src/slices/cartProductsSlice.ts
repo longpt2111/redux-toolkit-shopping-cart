@@ -4,10 +4,14 @@ import { RootState } from "../app/store";
 
 export interface CartProductsState {
   cartProducts: Product[];
+  loading: boolean;
+  error: string | null;
 }
 
 const initialState: CartProductsState = {
   cartProducts: [],
+  loading: false,
+  error: null,
 };
 
 export const cartProductsSlice = createSlice({
@@ -48,6 +52,19 @@ export const cartProductsSlice = createSlice({
         }
       );
     },
+    purchaseProducts: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    purchaseProductsSuccess: (state) => {
+      state.cartProducts = [];
+      state.loading = false;
+      state.error = null;
+    },
+    purchaseProductsFailure: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
   },
 });
 
@@ -56,9 +73,16 @@ export const {
   removeProductFromCart,
   increaseCartProduct,
   decreaseCartProduct,
+  purchaseProducts,
+  purchaseProductsSuccess,
+  purchaseProductsFailure,
 } = cartProductsSlice.actions;
 
 export const selectCartProducts = (state: RootState) =>
   state.cartProducts.cartProducts;
+export const selectPurchaseLoading = (state: RootState) =>
+  state.cartProducts.loading;
+export const selectPurchaseError = (state: RootState) =>
+  state.cartProducts.error;
 
 export default cartProductsSlice.reducer;
